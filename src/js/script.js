@@ -81,7 +81,7 @@
       clickableTrigger.addEventListener('click', function(event) {
         event.preventDefault();
 
-        const activeProduct = document.querySelector('.product.active');
+        const activeProduct = document.querySelector(select.all.menuProductsActive);
 
         if (activeProduct !== null && activeProduct != thisProduct.element) {
           activeProduct.classList.remove('active');
