@@ -170,6 +170,7 @@
       const thisWidget = this;
 
       thisWidget.getElements(element);
+      thisWidget.input.value = settings.amountWidget.defaultValue;
       thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
 
@@ -191,7 +192,10 @@
 
       const newValue = parseInt(value);
 
-      if(thisWidget.value !== newValue && !isNaN(newValue)) {
+      if(thisWidget.value !== newValue &&
+        !isNaN(newValue) &&
+        newValue <= settings.amountWidget.defaultMax &&
+        newValue >= settings.amountWidget.defaultMin) {
         thisWidget.value = newValue;
       }
 
