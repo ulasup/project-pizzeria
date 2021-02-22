@@ -146,6 +146,7 @@
       thisProduct.dom.cartButton.addEventListener('click', function(event){
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
 
@@ -178,7 +179,9 @@
           }
         }
       }
+      thisProduct.priceSingle = price;
       price *= thisProduct.amountWidget.value;
+      thisProduct.price = price;
       thisProduct.dom.priceElem.innerHTML = price;
     }
 
@@ -190,7 +193,26 @@
         thisProduct.processOrder();
       });
     }
-  }
+
+    addToCart(){
+      const thisProduct = this;
+
+      app.cart.add(thisProduct);
+    }
+
+    prepareCartProduct(){
+      const thisProduct = this;
+
+      const productSummary = {};
+
+      productSummary.id = thisProduct.id;
+      productSummary.name = thisProduct.data.name;
+      productSummary.amount = thisProduct.amountWidget.value;
+      productSummary.priceSingle = thisProduct.priceSingle;
+      productSummary.price = thisProduct.price;
+      productSummary.params = {};
+    }
+  };
 
   class AmountWidget{
     constructor(element){
@@ -252,7 +274,7 @@
       const event = new Event ('updated');
       thisWidget.element.dispatchEvent(event);
     }
-  }
+  };
 
   class Cart{
     constructor(element){
@@ -262,8 +284,6 @@
 
       thisCart.getElements(element);
       thisCart.initActions();
-
-      console.log('new Cart:', thisCart);
     }
 
     getElements(element){
@@ -283,7 +303,13 @@
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
     }
-  }
+
+    add(menuProduct){
+      //const thisCart = this;
+
+      console.log('adding product:', menuProduct);
+    }
+  };
 
   const app = {
     initMenu: function(){
