@@ -197,7 +197,7 @@
     addToCart(){
       const thisProduct = this;
 
-      app.cart.add(thisProduct);
+      app.cart.add(thisProduct.prepareCartProduct());
     }
 
     prepareCartProduct(){
@@ -211,8 +211,17 @@
       productSummary.priceSingle = thisProduct.priceSingle;
       productSummary.price = thisProduct.price;
       productSummary.params = {};
+
+      return productSummary;
     }
-  };
+
+    prepareCartProductParams(){
+      // const thisProduct = this;
+
+
+
+    }
+  }
 
   class AmountWidget{
     constructor(element){
@@ -274,7 +283,7 @@
       const event = new Event ('updated');
       thisWidget.element.dispatchEvent(event);
     }
-  };
+  }
 
   class Cart{
     constructor(element){
@@ -309,7 +318,7 @@
 
       console.log('adding product:', menuProduct);
     }
-  };
+  }
 
   const app = {
     initMenu: function(){
