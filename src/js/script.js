@@ -225,9 +225,9 @@
         const param = thisProduct.data.params[paramId];
 
         cartProductParams[paramId] = {
-          name: param.label,
+          label: param.label,
           options: {}
-        }
+        };
 
         for(let optionId in param.options) {
           const option = param.options[optionId];
@@ -235,8 +235,8 @@
 
           if(optionSelected) {
             cartProductParams[paramId].options[optionId] = option.label;
+          }
         }
-      }
       }
       return cartProductParams;
     }
@@ -338,7 +338,7 @@
 
       const generatedHTML = templates.cartProduct(menuProduct);
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
-      const cartContainer = document.querySelector(select.containerOf.cart);
+      const cartContainer = thisCart.dom.productList;
       cartContainer.appendChild(generatedDOM);
     }
   }
