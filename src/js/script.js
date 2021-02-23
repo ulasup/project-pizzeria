@@ -210,16 +210,35 @@
       productSummary.amount = thisProduct.amountWidget.value;
       productSummary.priceSingle = thisProduct.priceSingle;
       productSummary.price = thisProduct.price;
-      productSummary.params = {};
+      productSummary.params = thisProduct.prepareCartProductParams();
 
       return productSummary;
     }
 
     prepareCartProductParams(){
-      // const thisProduct = this;
+      const thisProduct = this;
 
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      const cartProductParams = {};
 
+      for(let paramId in thisProduct.data.params) {
+        const param = thisProduct.data.params[paramId];
 
+        cartProductParams[paramId] = {
+          name: param.label,
+          options: {}
+        }
+
+        for(let optionId in param.options) {
+          const option = param.options[optionId];
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+
+          if(optionSelected) {
+            cartProductParams[paramId].options[optionId] = option.label;
+        }
+      }
+      }
+      return cartProductParams;
     }
   }
 
@@ -302,6 +321,7 @@
 
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = element.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList = element.querySelector(select.cart.productList);
     }
 
     initActions(){
@@ -314,9 +334,12 @@
     }
 
     add(menuProduct){
-      //const thisCart = this;
+      const thisCart = this;
 
-      console.log('adding product:', menuProduct);
+      const generatedHTML = templates.cartProduct(menuProduct);
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+      const cartContainer = document.querySelector(select.containerOf.cart);
+      cartContainer.appendChild(generatedDOM);
     }
   }
 
