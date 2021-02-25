@@ -247,7 +247,7 @@
       const thisWidget = this;
 
       thisWidget.getElements(element);
-      thisWidget.input.value = settings.amountWidget.defaultValue;
+      thisWidget.value = settings.amountWidget.defaultValue;
       thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
     }
