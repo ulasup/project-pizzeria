@@ -418,6 +418,20 @@
         deliveryFee: settings.cart.defaultDeliveryFee,
         products: []
       };
+
+      for(let prod of thisCart.products) {
+        thisCart.payload.products.push(prod.getData());
+      }
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(thisCart.payload),
+      };
+
+      fetch(url, options)
     }
   }
 
@@ -484,6 +498,21 @@
         thisCartProduct.remove();
       });
     }
+
+    getData() {
+      const thisCartProduct = this;
+
+      const productSummary = {};
+
+      productSummary.id = thisCartProduct.id;
+      productSummary.name = thisCartProduct.name;
+      productSummary.amount = thisCartProduct.amountWidget.value;
+      productSummary.priceSingle = thisCartProduct.priceSingle;
+      productSummary.price = thisCartProduct.price;
+      productSummary.params = JSON.parse(JSON.stringify(thisCartProduct.params));
+
+      return productSummary;
+    }
   }
 
   const app = {
@@ -505,14 +534,10 @@
           return rawResponse.json();
         })
         .then(function(parsedResponse){
-          console.log('parsedResponse:', parsedResponse);
-
           thisApp.data.products = parsedResponse;
 
           thisApp.initMenu();
         });
-
-      console.log('thisApp.data', JSON.stringify(thisApp.data));
     },
 
     initCart: function(){
