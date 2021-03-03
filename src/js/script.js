@@ -431,7 +431,7 @@
         body: JSON.stringify(thisCart.payload),
       };
 
-      fetch(url, options)
+      fetch(url, options);
     }
   }
 
