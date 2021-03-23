@@ -11,6 +11,8 @@ class Booking{
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
+
+    thisBooking.selectedTables = null;
   }
 
   getData(){
@@ -134,6 +136,33 @@ class Booking{
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
+    for (let clickedElement of thisBooking.dom.tables) {
+      clickedElement.classList.remove(classNames.booking.selected);
+    }
+  }
+
+  initTables(event) {
+    const thisBooking = this;
+    const clickedElement = event.target;
+
+    if (!clickedElement.classList.contains(classNames.booking.tableBooked)
+      && clickedElement.classList.contains(classNames.booking.table)) {
+      const idTable = clickedElement.getAttribute(settings.booking.tableIdAttribute);
+
+      for (let clickedElement of thisBooking.dom.tables) {
+        clickedElement.classList.remove(classNames.booking.selected);
+      }
+
+      if (thisBooking.selectedTables === idTable) {
+        thisBooking.selectedTables = null;
+      } else {
+        thisBooking.selectedTables = idTable;
+        clickedElement.classList.add(classNames.booking.selected);
+      }
+    }
+    if (clickedElement.classList.contains(classNames.booking.tableBooked))
+    { alert('Table is already taken'); }
+
   }
 
   render(element){
@@ -150,7 +179,8 @@ class Booking{
     thisBooking.dom.pickedDate = element.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.pickedHour = element.querySelector(select.widgets.hourPicker.wrapper);
 
-    thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+    thisBooking.dom.tables = element.querySelectorAll(select.booking.tables);
+    thisBooking.dom.floorPlan = document.querySelector(select.booking.floorPlan);
   }
 
   initWidgets(){
@@ -164,6 +194,11 @@ class Booking{
 
     thisBooking.dom.wrapper.addEventListener('updated', function(){
       thisBooking.updateDOM();
+    });
+
+    thisBooking.dom.floorPlan.addEventListener('click', function(event){
+      event.preventDefault();
+      thisBooking.initTables(event);
     });
   }
 }
